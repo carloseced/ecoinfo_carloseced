@@ -1,0 +1,78 @@
+---
+title: "Ecoinformática: Bases de Datos"
+author: "Carlos Eced Royo"
+date: "2024-02-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Muestreos fitosociológicos
+
+## Ejercicio 1: Descripción literal de la base de datos
+
+Se pretende la elaboración de una base de datos a partir de **muestreos fitosociológicos** en diferentes parcelas de muestreo en un territorio conocido. Se va a usar el método de [Braun-Blanquet](https://biogeografia.net/fitosocio06.html), para el que se tienen que cumplir una serie de asunciones en cada área de muestreo, como la homogenidad florística, ecológica, fisionómica o la uniformidad de la cobertura vegetal, para asignar un **índice de abundancia** a cada especie presente. En primer lugar, necesitaremos definir las variables biológicas de presencia y abundancia de las especies vegetales, cuyos datos se recogerán en estadillos en el campo:
+
+-   **Presencia de especies vegetales**: una variable de tipo texto que indicará qué especies están presentes en cada punto de muestreo. Esta variable tendrá una relación de *uno a muchos* (en cada estadillo la especie solo se anotará una vez, pero entre todos los inventarios las especies se repetirán) con la lista de taxones de Andalucía de la que extraremos la información de las especies que pueden estar presentes en las parcelas del estudio. En esta lista encontraremos también información del **tipo biológico** (árbol, abrusto, hierba) de cada una de ellas.
+-   **Abundancia**: una variable de tipo texto, que irá asignada a cada especie presente en cada punto de muestreo y que será, de mayor a menor abundancia: r, +, 1, 2, 3, 4, 5.
+
+En segundo lugar, relativo a la parcela, las variables de interés serán:
+
+-   **Área de muestreo**: una variable numérica que indique la superficie de muestreo de cada parcela.
+-   **Forma del área de muestreo**: variable de tipo texto que deberá describir la forma del área de muestreo. Para reducir confusiones, esta variable se unirá a un listado de formas con una relación de muchos a uno (uno en el listado), en el que vendrán recogidas las posibles formas de las áreas de muestreo (circular, rectangular, cuadrada, irregular...).
+-   **Coordenadas geográficas** para geolocalizar cada parcela. Serán variables numéricas, una para la coordenada X y otra para la Y.
+-   **Otra información del área**, podemos dividir esta otra información en:
+    -   *Administrativa*: información del lugar, municipio, comarca y provincia del área de muestreo.
+    -   *Ambiental*: recopilación de información climática (temperaturas y precipitaciones medias anuales), edáfica, geológica, acción antrópica... en el área de muestreo.
+        -   Estos conjuntos de variables pueden obtenerse a partir de diccionarios u otras bases de datos que contengan esa información, aunque no se haya representado en la base de datos del ejercicio, lo habitual sería extraer estos datos de otras fuentes.
+
+En relación a los muestreos, se tomará información de:
+
+-   **Fecha**: cuándo se ha hecho el muestreo.
+-   **Investigador**: variable de tipo alfanumérico (un código asociado a cada investigador) para identificar quién ha hecho cada muestreo. Relación de muchos a uno con una entidad que contenga información de los investigadores. Se necesitará conocer el **nombre y apellidos** de los investigadores.
+-   **Número de la visita**: variable numérica autodenominada para identificar cada visita.
+
+En la **Figura 1** vemos un ejemplo de toda la información detallada que puede ser tomada en campo o completada con información de otras entidades.
+
+![**Figura 1.** Datos de inventario fitosocioecológico.](C:/Users\CARLOS\Universidad_CE\Master\Ecoinformatica\Inventarios_bases_datos\Tarea_databases\fichainventario1.png)
+
+------------------------------------------------------------------------
+
+## Ejercicio 2: diagrama entidad-relación
+
+En el diagrama de la **Figura 2** vemos cómo se construye la base de datos propuesta. Las entidades están en rojo, sus atributos en azul, y las relaciones se representan con flechas verdes uniendo los atributos de las diferentes entidades.
+
+La relación entre la información de campo del ESTADILLO y el DICC_ESPECIES es de uno a muchos porque en el campo las especies se repetirán en las diferentes parcelas de muestreo, mientras que en el listado de taxones de Andalucía aparecen solo una vez.
+
+La relación de la PARCELA con el DICC_FORMAS es de uno a muchos porque en la lista cada forma tan solo aparece una vez, mientras que en el campo puede haber varias zonas de muestreo con la misma forma.
+
+La relación con la información ambiental (clima, suelo, geología...) será de muchos a muchos con otros inventarios ambientales que contengan la información que nos interesa, ya que en estos inventarios tendremos, por ejemplo, el mismo tipo de suelo varias veces. Estos inventarios deberán tener una relación de uno a muchos con otras bases de datos para normalizar su información. La información administrativa será de uno a muchos con la base de datos que contenga los términos administrativos indicados.
+
+La relación entre los ESTADILLOS y las VISITAS será de uno a muchos a través del ID de las visitas, que será único en la entidad visitas y podrá repetirse en diferentes estadillos.
+
+Por último, la relación de VISITAS con la lista de INVESTIGADORES será de uno a muchos ya que un investigador puede hacer varios muestreos, pero en la lista aparece su código una sola vez. Para conseguir esta relación se necesita una tabla intermedia (*ver base de datos*), ya que un investigador puede hacer varias visitas, y a una visita han podido ir varios investigadores.
+
+![**Figura 2.** Diagrama de la base de datos.](C:/Users\CARLOS\Universidad_CE\Master\Ecoinformatica\Inventarios_bases_datos\Tarea_databases\diagrama.jpeg)
+
+------------------------------------------------------------------------
+
+## Ejercicio 3: Base de datos
+
+A partir de la base de datos generada, podemos hacer una consulta del siguiente estilo (**Figura 3**):
+
+¿Está está especie del libro de taxones de Andalucía presente en el estudio? → Si lo está, veremos en qué ESTADILLOS aparece, y de ahí en qué parcelas tiene presencia la especie. También, a partir de ver en qué estadillos está presente la especie, podremos determinar en VISITAS cuándo fueron hechos los muestreos (mayor probabilidad de ver esa especie en esas fechas) y quién los llevó a cabo (le subimos el sueldo :D ).
+
+![**Figura 3.** Consulta.](C:/Users\CARLOS\Universidad_CE\Master\Ecoinformatica\Inventarios_bases_datos\Tarea_databases\consulta.png)
+
+## Dificultades
+
+Planificar desde cero y en un texto la base de datos con sus entidades, atributos y relaciones resulta complejo. En mi caso, he hecho un texto sin mucho sentido y al hacer el diagrama en papel lo he ido mejorando. Después, al hacer la base de datos en *Access* con el tutorial disponible en el *Classroom* he visto que el diagrama que había hecho en papel tampoco tenía mucho sentido, entonces he dejado hecha la base de datos en *Access* a la vez que rehacía el diagrama en papel, para hacer el texto lo último. Considero que empezar por el texto es complejo y que es mejor identificar en un esquema previo al menos las entidades y atributos, para que sea más fácil abordar la redacción del texto explicativo de la base de datos. Entonces he tenido que hacer del ejercicio 1 al 3, y luego del 3 al 1 revisando todo el trabajo anterior.
+
+La consulta hecha en *Access* no sé si ha quedado bien, la idea creo que se entiende pero no sé si es correcta la forma de expresarla en el programa.
+
+También me he complicado la vida haciendo el trabajo en *Rmarkdown* así que quizá me ha llevado más tiempo la elaboración de los documentos a presentar.
+
+# Control de versiones
+Hago un ultimo cambio para subir toda la carpeta a mi repositorio online, con cambios en mi archivo .Rmd
