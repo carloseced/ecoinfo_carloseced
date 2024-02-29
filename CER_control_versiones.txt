@@ -9,3 +9,6 @@ Hola, soy Carlos Eced y estoy haciendo una tarea para ecoinformática, del módu
 4. Ir haciendo git add y git commit para enviar al repositorio los cambios.
 
 Hago un último cambio para ver si me he enterado de verdad :)
+
+5. Ahora creo el repositorio remoto con git remote add origin "url"
+
