@@ -76,3 +76,5 @@ También me he complicado la vida haciendo el trabajo en *Rmarkdown* así que qu
 
 # Control de versiones
 Hago un ultimo cambio para subir toda la carpeta a mi repositorio online, con cambios en mi archivo .Rmd
+
+Ahora si que si cambio ultimisimo y ultimo commit que me estoy quedando frito.
