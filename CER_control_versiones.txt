@@ -1,0 +1,10 @@
+Hola, soy Carlos Eced y estoy haciendo una tarea para ecoinformática, del módulo control de versiones.
+
+1. Para crear un repositorio en mi ordenador, primero he hecho get init C:/ruta hasta mi repositorio.
+
+2. Después, git add . para añadir todos los archivos de esa carpeta a mi repositorio.
+
+3. Para enviar los archivos, he hecho git commit -m "mensaje explicativo de lo que envío".
+
+Vale ahora hago otro cambio porque me había liado y me habia creado un repositorio llamado ecoinfo_carloseced
+dentro de mi usuario donde le ha dado la gana, y no dentro de la carpeta de ecoinformática que es donde lo quería crear yo. Ya estamos bien :)
