@@ -1,3 +1,9 @@
 Hola, soy Carlos Eced y estoy haciendo una tarea para ecoinformática, del módulo control de versiones.
 
 1. He creado un repositorio en mi ordenador con "git init C:/ruta_destino"
+
+2. Después creo el archivo .txt y hago git add "nombrearchivo" o git add . para añadir todo mi repositorio.
+
+3. git commit con los cambios que haga.
+
+4. Ir haciendo git add y git commit para enviar al repositorio los cambios.
